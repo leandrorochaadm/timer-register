@@ -16,6 +16,6 @@ func Generate() {
 	})
 	e.GET("/registrys", controllers.GetRegistrys)
 	e.POST("/register", controllers.CreateRegister)
-	e.DELETE("/register", controllers.DeleteRegister)
+	e.DELETE("/register/:id", controllers.DeleteRegister)
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", config.Port)))
 }

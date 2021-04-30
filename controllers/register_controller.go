@@ -1,9 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-	time "time"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/leandrorochaadm/time-register/database"
@@ -19,11 +20,10 @@ type Register struct {
 
 type Registrys []Register
 
-var registerList Registrys
-
 var ciclePrimary bool
 
 func GetRegistrys(c echo.Context) error {
+	var registerList Registrys
 	rows, err := database.DBClient.
 		Query("SELECT id, datetime, details, id_category FROM registrys;")
 	if err != nil {
@@ -75,6 +75,17 @@ func CreateRegister(c echo.Context) error {
 }
 
 func DeleteRegister(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	return c.String(http.StatusNoContent, string(id))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		echo.NewHTTPError(http.StatusUnprocessableEntity,
+			"É necessário informar a tarefa que deseja deletar\n "+err.Error())
+	}
+	fmt.Print(id)
+
+	_, err = database.DBClient.Exec("delete from registrys where id = ?", id)
+	if err != nil {
+		echo.NewHTTPError(http.StatusUnprocessableEntity,
+			"Não foi possível deletar essa tarefa \n "+err.Error())
+	}
+	return c.String(http.StatusNoContent, "")
 }
