@@ -3,22 +3,56 @@ package controllers
 import (
 	"net/http"
 	"strconv"
+	time "time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/leandrorochaadm/time-register/database"
 )
 
 type Register struct {
-	ID         uint64 `json:"id"`
-	IDCategory uint64 `json:"id_category"`
-	Details    string `json:"details"`
+	ID         uint64    `json:"id"`
+	Datetime   time.Time `json:"datetime"`
+	IDCategory uint64    `json:"id_category"`
+	Details    string    `json:"details"`
+	Duration   string    `json:"duration"`
 }
 
 type Registrys []Register
 
 var registerList Registrys
 
+var ciclePrimary bool
+
 func GetRegistrys(c echo.Context) error {
+	rows, err := database.DBClient.
+		Query("SELECT id, datetime, details, id_category FROM registrys;")
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity,
+			"Não foi possível listar os registros \n"+err.Error())
+	}
+	var datetimePrevious time.Time
+	// var &ciclePrimary bool{}
+	for rows.Next() {
+		var singleRegister Register
+		if err := rows.Scan(&singleRegister.ID, &singleRegister.Datetime, &singleRegister.Details,
+			&singleRegister.IDCategory); err != nil {
+			return echo.NewHTTPError(http.StatusUnprocessableEntity,
+				"Não foi possível desserializar os registros \n"+err.Error())
+		}
+
+		if ciclePrimary {
+			singleRegister.Duration = singleRegister.Datetime.Sub(datetimePrevious).String()
+		} else {
+			singleRegister.Duration = singleRegister.Datetime.Sub(singleRegister.Datetime).String()
+
+		}
+		datetimePrevious = singleRegister.Datetime
+		// singleRegister.Duration = (25*time.Hour+ 3*time.Second).String()
+		registerList = append(registerList, singleRegister)
+		ciclePrimary = true
+	}
 	return c.JSON(http.StatusOK, registerList)
+	// return c.JSON(http.StatusOK, registerList)
 }
 
 func CreateRegister(c echo.Context) error {
@@ -27,8 +61,17 @@ func CreateRegister(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity)
 	}
-	registerList = append(registerList, register)
-	return c.JSON(http.StatusCreated, registerList)
+
+	res, err := database.DBClient.Exec("INSERT INTO registrys (id_category, details) VALUES (?,?);",
+		register.IDCategory, register.Details)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity,
+			"Não foi possível gravar esse registro: \n"+err.Error())
+	}
+	id, _ := res.LastInsertId()
+
+	// registerList = append(registerList, register)
+	return c.JSON(http.StatusCreated, id)
 }
 
 func DeleteRegister(c echo.Context) error {
