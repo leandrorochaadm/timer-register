@@ -1,4 +1,4 @@
-package date_today
+package date_deadline
 
 import (
 	"fmt"
@@ -6,13 +6,11 @@ import (
 	"time"
 )
 
-func Main() {
-	fmt.Printf("dia(%.0f|%.0f) <=> semana(%.0f|%.0f) \n",
+func DeadlineYear() {
+	fmt.Printf("Deadline year => dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.4f \n",
 		daysBetwayTodayStartYear(), daysBetwayTodayFinishYear(),
 		weeksBetwayTodayStartYear(), weeksBetwayTodayFinishYear(),
-	)
-
-	DeadlineFormated()
+		percentageLivedYear())
 }
 func finishYearCurrent() time.Time {
 	return time.Date(time.Now().Year()+1, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -36,4 +34,8 @@ func daysBetwayTodayStartYear() float64 {
 
 func weeksBetwayTodayStartYear() float64 {
 	return math.RoundToEven(daysBetwayTodayStartYear() / 7)
+}
+
+func percentageLivedYear() float64 {
+	return daysBetwayTodayStartYear() / 365.25 * 100
 }

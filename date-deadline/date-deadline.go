@@ -1,4 +1,4 @@
-package date_today
+package date_deadline
 
 import (
 	"fmt"
@@ -6,9 +6,8 @@ import (
 	"time"
 )
 
-func DeadlineFormated() {
-	fmt.Println(">>>> Deadline <<<<")
-	fmt.Printf("dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.4f",
+func DeadlineLife() {
+	fmt.Printf("Deadline life => dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.4f",
 		daysBetwayTodayBirth(), daysBetwayTodayDeadline(),
 		weeksBetwayTodayBirth(), weeksBetwayTodayDeadline(),
 		percentageLived())
