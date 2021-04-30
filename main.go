@@ -5,6 +5,7 @@ import (
 
 	"github.com/leandrorochaadm/time-register/config"
 	date_deadline "github.com/leandrorochaadm/time-register/date-deadline"
+	"github.com/leandrorochaadm/time-register/router"
 )
 
 func main() {
@@ -14,6 +15,6 @@ func main() {
 	date_deadline.DeadlineYear()
 	date_deadline.DeadlineLife()
 
-	// router.Generate()
+	router.Generate()
 
 }
