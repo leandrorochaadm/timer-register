@@ -7,9 +7,10 @@ import (
 )
 
 func DeadlineLife() {
-	fmt.Printf("Deadline life => dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.4f",
+	fmt.Printf("Deadline life => dia(%.0f|%.0f) <=> semana(%.0f|%.0f)  <=> mês(%.0f|%.0f) | %.3f%%",
 		daysBetwayTodayBirth(), daysBetwayTodayDeadline(),
 		weeksBetwayTodayBirth(), weeksBetwayTodayDeadline(),
+		monthsBetwayTodayBirth(), monthsBetwayTodayDeadline(),
 		percentageLived())
 
 }
@@ -29,12 +30,20 @@ func weeksBetwayTodayDeadline() float64 {
 	return math.RoundToEven(daysBetwayTodayDeadline() / 7)
 }
 
+func monthsBetwayTodayDeadline() float64 {
+	return math.RoundToEven(daysBetwayTodayDeadline() / 30)
+}
+
 func daysBetwayTodayBirth() float64 {
 	return math.RoundToEven(time.Now().UTC().Sub(birth()).Hours() / 24)
 }
 
 func weeksBetwayTodayBirth() float64 {
 	return math.RoundToEven(daysBetwayTodayBirth() / 7)
+}
+
+func monthsBetwayTodayBirth() float64 {
+	return math.RoundToEven(daysBetwayTodayBirth() / 30)
 }
 
 func percentageLived() float64 {

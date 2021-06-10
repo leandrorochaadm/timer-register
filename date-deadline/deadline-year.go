@@ -7,7 +7,7 @@ import (
 )
 
 func DeadlineYear() {
-	fmt.Printf("Deadline year => dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.4f \n",
+	fmt.Printf("Deadline year => dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.3f%% \n",
 		daysBetwayTodayStartYear(), daysBetwayTodayFinishYear(),
 		weeksBetwayTodayStartYear(), weeksBetwayTodayFinishYear(),
 		percentageLivedYear())
