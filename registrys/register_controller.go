@@ -15,7 +15,8 @@ type Register struct {
 	Datetime   time.Time `json:"datetime"`
 	IDCategory uint64    `json:"id_category"`
 	Details    string    `json:"details"`
-	Duration   string    `json:"duration"`
+	Duration   int64     `json:"duration"`
+	Time       string    `json:"time"`
 }
 
 type Registrys []Register
@@ -31,21 +32,24 @@ func GetRegistrys(c echo.Context) error {
 			"Não foi possível listar os registros \n"+err.Error())
 	}
 	var datetimePrevious time.Time
-	// var &ciclePrimary bool{}
 	for rows.Next() {
 		var singleRegister Register
 		if err := rows.Scan(&singleRegister.ID, &singleRegister.Datetime, &singleRegister.Details,
 			&singleRegister.IDCategory); err != nil {
 			return echo.NewHTTPError(http.StatusUnprocessableEntity,
-				"Não foi possível desserializar os registros \n"+err.Error())
+				"Não foi possível deserializer os registros \n"+err.Error())
+
 		}
 
 		if ciclePrimary {
-			singleRegister.Duration = singleRegister.Datetime.Sub(datetimePrevious).String()
+			singleRegister.Duration = int64(singleRegister.Datetime.Sub(datetimePrevious) / time.
+				Second)
+			singleRegister.Time = singleRegister.Datetime.Sub(datetimePrevious).String()
 		} else {
-			singleRegister.Duration = singleRegister.Datetime.Sub(singleRegister.Datetime).String()
-
+			singleRegister.Duration = int64(singleRegister.Datetime.Sub(singleRegister.Datetime) / time.Second)
+			singleRegister.Time = singleRegister.Datetime.Sub(singleRegister.Datetime).String()
 		}
+
 		datetimePrevious = singleRegister.Datetime
 		// singleRegister.Duration = (25*time.Hour+ 3*time.Second).String()
 		registerList = append(registerList, singleRegister)
