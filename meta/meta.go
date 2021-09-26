@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFinal, valorAtual float64) (percentualRealizado float64, err error) {
+func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFinal, valorAtual float64) (percentualRealizadoDesejado, percentualRealizadoTempo float64, err error) {
 	if dataAfericao.IsZero() {
 		dataAfericao = time.Now()
 	}
@@ -30,6 +30,10 @@ func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFin
 
 	valorIdealHoje := valorInicial * math.Pow(taxaCrescimentoDiaria, diasPercorridos)
 
-	percentualRealizado = valorAtual / valorIdealHoje
-	return percentualRealizado, err
+	percentualRealizadoDesejado = (valorAtual / valorIdealHoje) * 100
+
+	diasMeta := dataFinal.Sub(dataInicial).Hours() / 24
+
+	percentualRealizadoTempo = (diasPercorridos / diasMeta) * 100
+	return
 }
