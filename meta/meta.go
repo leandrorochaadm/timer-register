@@ -6,7 +6,10 @@ import (
 	"time"
 )
 
-func Meta(dataInicial, dataFinal time.Time, valorInicial, valorFinal, valorAtual float64) (percentualRealizado float64, err error) {
+func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFinal, valorAtual float64) (percentualRealizado float64, err error) {
+	if dataAfericao.IsZero() {
+		dataAfericao = time.Now()
+	}
 	if valorAtual == 0 {
 		valorAtual = valorInicial
 	}
@@ -23,10 +26,10 @@ func Meta(dataInicial, dataFinal time.Time, valorInicial, valorFinal, valorAtual
 
 	taxaCrescimentoDiaria := math.Pow(crescimento, float64(1/periodoDias))
 
-	diasPercorridos := time.Now().Sub(dataInicial).Hours() / 24
+	diasPercorridos := dataAfericao.Sub(dataInicial).Hours() / 24
 
 	valorIdealHoje := valorInicial * math.Pow(taxaCrescimentoDiaria, diasPercorridos)
 
-	percentualRealizado = valorInicial / valorIdealHoje
+	percentualRealizado = valorAtual / valorIdealHoje
 	return percentualRealizado, err
 }
