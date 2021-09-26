@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFinal, valorAtual float64) (percentualRealizadoDesejado, percentualRealizadoTempo float64, err error) {
+func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFinal, valorAtual float64) (percentualRealizadoDesejado, percentualRealizadoTempo, percentualRealizadoDoValor float64, err error) {
 	if dataAfericao.IsZero() {
 		dataAfericao = time.Now()
 	}
@@ -35,5 +35,7 @@ func Meta(dataInicial, dataFinal, dataAfericao time.Time, valorInicial, valorFin
 	diasMeta := dataFinal.Sub(dataInicial).Hours() / 24
 
 	percentualRealizadoTempo = (diasPercorridos / diasMeta) * 100
+
+	percentualRealizadoDoValor = (valorAtual / valorFinal) * 100
 	return
 }

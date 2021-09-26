@@ -20,15 +20,15 @@ func main() {
 	fmt.Println("\n-------------------------------------------------------------------------------------")
 	//fmt.Println(time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC).Add(time.Hour*24*(365/2)))
 
-	metaPecorrida, metaPrazo, _ := meta.Meta(
+	metaPecorrida, metaPrazo, metaValor, _ := meta.Meta(
 		time.Now().Add(-time.Minute*60*24*30),
 		time.Now().Add(time.Minute*60*24*30),
-		time.Now().Add(time.Minute*60*24*7),
+		time.Now().Add(time.Minute*60*24*1),
 		1.0,
 		2.0,
-		1.4,
+		1.2,
 	)
 
-	fmt.Println(metaPecorrida, metaPrazo)
+	fmt.Println(metaPecorrida, metaPrazo, metaValor)
 
 }
