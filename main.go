@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	date_deadline "github.com/leandrorochaadm/time-register/date-deadline"
+	"github.com/leandrorochaadm/time-register/meta"
+	"time"
 )
 
 func main() {
@@ -17,5 +19,9 @@ func main() {
 	date_deadline.DeadlineLife()
 	fmt.Println("\n-------------------------------------------------------------------------------------")
 	//fmt.Println(time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC).Add(time.Hour*24*(365/2)))
+
+	metaTeste, _ := meta.Meta(time.Now().Add(-time.Minute*60*24*30), time.Now().Add(time.Minute*60*24*30), 1.0, 2.0, 0)
+
+	fmt.Println(metaTeste)
 
 }
