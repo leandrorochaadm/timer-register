@@ -23,7 +23,11 @@ func birth() time.Time {
 }
 
 func life() float64 {
-	return math.RoundToEven(deadline().Sub(birth()).Hours() / 24)
+	return math.RoundToEven(deadline().Sub(birth()).Hours())
+}
+
+func hoursBetwayTodayBirth() float64 {
+	return math.RoundToEven(time.Now().UTC().Sub(birth()).Hours())
 }
 
 func daysBetwayTodayDeadline() float64 {
@@ -51,5 +55,5 @@ func monthsBetwayTodayBirth() float64 {
 }
 
 func percentageLived() float64 {
-	return daysBetwayTodayBirth() / life() * 100
+	return (hoursBetwayTodayBirth() / life()) * 100
 }
