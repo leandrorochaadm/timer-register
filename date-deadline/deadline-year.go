@@ -7,11 +7,12 @@ import (
 )
 
 func DeadlineYear() {
-	fmt.Printf("Deadline year => dia(%.0f|%.0f) <=> semana(%.0f|%.0f) | %.3f%% \n",
+	fmt.Printf("Deadline year => day(%.0f|%.0f) <=> week(%.0f|%.0f) | %.3f%% \n",
 		daysBetwayTodayStartYear(), daysBetwayTodayFinishYear(),
 		weeksBetwayTodayStartYear(), weeksBetwayTodayFinishYear(),
 		percentageLivedYear())
 }
+
 func finishYearCurrent() time.Time {
 	return time.Date(time.Now().Year()+1, 1, 1, 0, 0, 0, 0, time.UTC)
 }
